@@ -1,12 +1,15 @@
 import express from "express";
-const app = express();
-const PORT = 5000;
-app.get("/",(req,res)=>
-{
-    res.send("campus sphere backend is running");
-});
 
-app.listen(PORT,()=>
-{
-    console.log(`Server running on port: ${PORT}`);
+
+
+
+import app from "./app.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port: ${PORT}`);
 });
