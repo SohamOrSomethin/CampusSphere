@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum CategoryType {
+  MARKETPLACE
+  SERVICE
+  BOTH
+}
+
+model User {
+  id                     Int       @id @default(autoincrement())
+  email                  String    @unique
+  password               String
+  role                   Role      @default(STUDENT)
+  collegeEmailVerified   Boolean   @default(false)
+  trustScore             Float     @default(0)
+  averageRating          Float     @default(0)
+  verifiedBadge          Boolean   @default(false)
+  createdAt              DateTime  @default(now())
+
+  profile                Profile?
+
+  @@map("users")
+}
+
+model Profile {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  name        String
+  department  String
+  year        Int
+  bio         String?
+  skills      String[]
+  interests   String[]
+  photoUrl    String?
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Category {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  type        CategoryType
+  icon        String?
+
+  @@map("categories")
+}
