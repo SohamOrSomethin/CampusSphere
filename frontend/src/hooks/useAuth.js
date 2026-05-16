@@ -1,41 +1,26 @@
-import { useQuery }
-  from "@tanstack/react-query";
-
-import axiosInstance
-  from "../api/axios";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "../api/axios";
 
 export default function useAuth() {
-
   const {
     data,
     isLoading,
     isError,
     refetch,
   } = useQuery({
-
     queryKey: ["me"],
-
     queryFn: async () => {
-
-      const response =
-        await axiosInstance.get(
-          "/auth/me"
-        );
-
+      const response = await axiosInstance.get("/auth/me");
       return response.data;
     },
-
     retry: false,
   });
 
   return {
-
-    user: data?.user,
-
+    user: data?.user ?? null,
     isLoading,
-
-    isAuthenticated: !isError,
-
+    isError,
+    isAuthenticated: !!data?.user,
     refetchUser: refetch,
   };
 }
