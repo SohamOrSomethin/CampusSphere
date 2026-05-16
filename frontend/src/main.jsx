@@ -1,15 +1,39 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+import {
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
+import {
+  ReactQueryDevtools,
+} from "@tanstack/react-query-devtools";
+
+import queryClient
+  from "./app/queryClient";
+
+import AppRoutes
+  from "./routes/AppRoutes";
+
 import "./index.css";
-import AppRoutes from "./routes/AppRoutes";
 
-import { SocketProvider } from "./context/SocketContext";
+ReactDOM.createRoot(
+  document.getElementById("root")
+).render(
 
-ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <SocketProvider>
+
+    <QueryClientProvider
+      client={queryClient}
+    >
+
       <AppRoutes />
-    </SocketProvider>
+
+      <ReactQueryDevtools
+        initialIsOpen={false}
+      />
+
+    </QueryClientProvider>
+
   </React.StrictMode>
 );
